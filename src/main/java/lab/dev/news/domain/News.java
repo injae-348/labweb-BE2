@@ -4,14 +4,13 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lab.dev.common.BaseEntity;
 import lab.dev.file.domain.UploadFile;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 @Getter
 @Table(name = "NEWS")
@@ -32,9 +31,14 @@ public class News extends BaseEntity {
     private String content;
 
     @ElementCollection
+    @CollectionTable(name = "NEWS_IMAGES", joinColumns = @JoinColumn(name = "news_id"))
     private List<UploadFile> imageFiles;
 
-    public News(LocalDateTime date, String activity, String content, List<UploadFile> imageFiles) {
+    public News(
+            @NonNull LocalDateTime date,
+            @NonNull String activity,
+            @NonNull String content,
+            List<UploadFile> imageFiles) {
         this.date = date;
         this.activity = activity;
         this.content = content;
