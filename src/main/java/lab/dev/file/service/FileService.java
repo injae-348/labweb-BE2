@@ -35,7 +35,7 @@ public class FileService {
 
     public UploadFile storeFile(MultipartFile multipartFile) throws IOException {
         if (multipartFile.isEmpty()) {
-            return null;
+            throw new IllegalArgumentException("파일이 비어있습니다.");
         }
 
         String originalFilename = multipartFile.getOriginalFilename();
@@ -54,5 +54,13 @@ public class FileService {
     private String extracted(String originalFilename) {
         int pos = originalFilename.lastIndexOf(".");
         return originalFilename.substring(pos+1);
+    }
+
+    // Todo: 파일 삭제 기능 적용
+    public void deleteFile(String filename) {
+        File file = new File(getFullPath(filename));
+        if (file.exists()) {
+            file.delete();
+        }
     }
 }
