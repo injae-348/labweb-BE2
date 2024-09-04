@@ -31,8 +31,7 @@ public class News extends BaseEntity {
     @NonNull
     private String content;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
-    @JoinColumn(name = "news_id")
+    @ElementCollection
     private List<UploadFile> imageFiles;
 
     public News(LocalDateTime date, String activity, String content, List<UploadFile> imageFiles) {
