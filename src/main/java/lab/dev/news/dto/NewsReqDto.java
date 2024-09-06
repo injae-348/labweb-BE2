@@ -22,6 +22,7 @@ public record NewsReqDto(
         @NotNull(message = "내용을 입력해주세요.")
         @Size(max = 1000, message = "내용은 1000자 이내로 입력해주세요.")
         String content,
+
         List<MultipartFile> imageFiles
 ) {
 

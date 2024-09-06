@@ -7,10 +7,9 @@ import lab.dev.file.domain.UploadFile;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 @Getter
 @Table(name = "NEWS")
@@ -34,6 +33,7 @@ public class News extends BaseEntity {
     @CollectionTable(name = "NEWS_IMAGES", joinColumns = @JoinColumn(name = "news_id"))
     private List<UploadFile> imageFiles;
 
+    @Builder
     public News(
             @NonNull LocalDateTime date,
             @NonNull String activity,
@@ -44,4 +44,16 @@ public class News extends BaseEntity {
         this.content = content;
         this.imageFiles = imageFiles;
     }
+
+    public void update(
+            @NonNull LocalDateTime date,
+            @NonNull String activity,
+            @NonNull String content,
+            List<UploadFile> imageFiles) {
+        this.date = date;
+        this.activity = activity;
+        this.content = content;
+        this.imageFiles = imageFiles;
+    }
+
 }
