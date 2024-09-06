@@ -1,17 +1,20 @@
 package lab.dev.file.service;
 
 import lab.dev.file.domain.UploadFile;
-import lab.dev.file.exception.FileDeleteFailedException;
-import lab.dev.file.exception.FileNotFoundException;
-import lab.dev.file.exception.FileTypeNotAllowedException;
-import lab.dev.file.exception.FileUploadFailedException;
+import lab.dev.file.exception.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -25,6 +28,23 @@ public class FileService {
 
     public String getFullPath(String filename) {
         return fileDir + filename;
+    }
+
+    public Resource loadFileAsResource(String filename) {
+        if (filename.contains("..")) {
+            throw FileTypeNotAllowedException.EXCEPTION;
+        }
+
+        Path filePath = Paths.get(getFullPath(filename)).normalize();
+        if (!Files.exists(filePath) || !filePath.startsWith(getFullPath(""))) {
+            throw FileNotFoundException.EXCEPTION;
+        }
+
+        try {
+            return new UrlResource(filePath.toUri());
+        } catch (MalformedURLException e) {
+            throw MalformedUrlException.EXCEPTION;
+        }
     }
 
     public List<UploadFile> storeFiles(List<MultipartFile> multipartFiles) {

@@ -21,8 +21,9 @@ public class FileController {
     // Todo: 보안상 문제가 있을 수 있음
     @GetMapping("/{filename}")
     public Resource downloadFile(
-            @PathVariable String filename) throws MalformedURLException {
-        return new UrlResource("file:" + fileService.getFullPath(filename));
+            @PathVariable String filename
+    ) {
+        return fileService.loadFileAsResource(filename);
     }
 
 }
