@@ -63,7 +63,6 @@ class NewsServiceTest {
                 .build();
 
         News mockNews = News.builder()
-                .id(1L)
                 .date(newsReqDto.date())
                 .activity(newsReqDto.activity())
                 .content(newsReqDto.content())

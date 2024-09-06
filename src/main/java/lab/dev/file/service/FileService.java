@@ -1,6 +1,10 @@
 package lab.dev.file.service;
 
 import lab.dev.file.domain.UploadFile;
+import lab.dev.file.exception.FileDeleteFailedException;
+import lab.dev.file.exception.FileNotFoundException;
+import lab.dev.file.exception.FileTypeNotAllowedException;
+import lab.dev.file.exception.FileUploadFailedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -23,7 +27,10 @@ public class FileService {
         return fileDir + filename;
     }
 
-    public List<UploadFile> storeFiles(List<MultipartFile> multipartFiles) throws IOException {
+    public List<UploadFile> storeFiles(List<MultipartFile> multipartFiles) {
+        if(multipartFiles == null) {
+            multipartFiles = new ArrayList<>();
+        }
         List<UploadFile> storeFileResult = new ArrayList<>();
         for (MultipartFile multipartFile : multipartFiles) {
             if (!multipartFile.isEmpty()) {
@@ -33,14 +40,18 @@ public class FileService {
         return storeFileResult;
     }
 
-    public UploadFile storeFile(MultipartFile multipartFile) throws IOException {
+    public UploadFile storeFile(MultipartFile multipartFile) {
         if (multipartFile.isEmpty()) {
-            throw new IllegalArgumentException("파일이 비어있습니다.");
+            throw FileNotFoundException.EXCEPTION;
         }
 
         String originalFilename = multipartFile.getOriginalFilename();
         String storeFilename = createStoreFileName(originalFilename);
-        multipartFile.transferTo(new File(getFullPath(storeFilename)));
+        try{
+            multipartFile.transferTo(new File(getFullPath(storeFilename)));
+        } catch (IOException e) {
+            throw FileUploadFailedException.EXCEPTION;
+        }
         return new UploadFile(originalFilename, storeFilename);
     }
 
@@ -53,14 +64,20 @@ public class FileService {
 
     private String extracted(String originalFilename) {
         int pos = originalFilename.lastIndexOf(".");
+        if (pos == -1) {
+            throw FileTypeNotAllowedException.EXCEPTION;
+        }
         return originalFilename.substring(pos+1);
     }
 
-    // Todo: 파일 삭제 기능 적용
     public void deleteFile(String filename) {
         File file = new File(getFullPath(filename));
         if (file.exists()) {
-            file.delete();
+            if (!file.delete()) {
+                throw FileDeleteFailedException.EXCEPTION;
+            }
+        } else {
+            throw FileNotFoundException.EXCEPTION;
         }
     }
 }
