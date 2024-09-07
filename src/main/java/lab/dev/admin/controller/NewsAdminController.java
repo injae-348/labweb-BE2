@@ -18,7 +18,9 @@ public class NewsAdminController {
     private final NewsService newsService;
 
     @GetMapping
-    public String listNews(Model model) {
+    public String listNews(
+            Model model
+    ) {
         List<NewsResDto> newsList = newsService.getNewsList();
         model.addAttribute("newsList", newsList);
         return "news/list";
