@@ -18,7 +18,6 @@ public class FileController {
 
     private final FileService fileService;
 
-    // Todo: 보안상 문제가 있을 수 있음
     @GetMapping("/{filename}")
     public Resource downloadFile(
             @PathVariable String filename
