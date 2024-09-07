@@ -15,7 +15,8 @@ public enum FileErrorCode implements ErrorCode {
     FILE_DELETE_FAILED("F003", HttpStatus.FORBIDDEN,"파일 삭제에 실패했습니다."),
     FILE_SIZE_EXCEEDED("F004", HttpStatus.FORBIDDEN,"파일 크기가 초과되었습니다."),
     FILE_TYPE_NOT_ALLOWED("F005", HttpStatus.BAD_REQUEST,"허용되지 않는 파일 형식입니다."),
-    MALFORMED_URL("F006", HttpStatus.BAD_REQUEST, "잘못된 URL입니다.")
+    MALFORMED_URL("F006", HttpStatus.BAD_REQUEST, "잘못된 URL입니다."),
+    FILE_DOWNLOAD_FAILED("F007", HttpStatus.FORBIDDEN, "파일 다운로드에 실패했습니다.")
     ;
 
     private final String code;
