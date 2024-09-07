@@ -28,7 +28,8 @@
     <tbody>
     <tr th:each="news : ${newsList}">
         <td th:text="${news.id}"></td>
-        <td th:text="${news.date}"></td>
+
+        <td th:text="${#temporals.format(news.date, 'yyyy-MM-dd')}"></td>
         <td th:text="${news.activity}"></td>
         <td th:text="${news.content}"></td>
         <td>
