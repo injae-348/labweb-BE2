@@ -38,7 +38,8 @@ public class News extends BaseEntity {
             @NonNull LocalDateTime date,
             @NonNull String activity,
             @NonNull String content,
-            List<UploadFile> imageFiles) {
+            List<UploadFile> imageFiles
+    ) {
         this.date = date;
         this.activity = activity;
         this.content = content;
@@ -49,11 +50,15 @@ public class News extends BaseEntity {
             @NonNull LocalDateTime date,
             @NonNull String activity,
             @NonNull String content,
-            List<UploadFile> imageFiles) {
+            List<UploadFile> imageFiles
+    ) {
         this.date = date;
         this.activity = activity;
         this.content = content;
         this.imageFiles = imageFiles;
     }
 
+    public void addImage(UploadFile image) {
+        this.imageFiles.add(image);
+    }
 }

@@ -16,15 +16,33 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create # 테이블 생성
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
         format_sql: true
         show_sql: true
     database-platform: org.hibernate.dialect.H2Dialect
+    defer-datasource-initialization: true # 스키마 생성 후 데이터 초기화
 
   servlet:
     multipart:
       max-file-size: 1MB
       max-request-size: 10MB
+
+  sql:
+    init:
+      data-locations: classpath:data.sql
+      mode: never
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+
+  web:
+    resources:
+      static-locations: classpath:/static/
+
