@@ -28,3 +28,18 @@ spring:
     multipart:
       max-file-size: 1MB
       max-request-size: 10MB
+
+  sql:
+    init:
+      data-locations: classpath:data.sql
+      mode: NEVER
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+
+  web:
+    resources:
+      static-locations: classpath:/static/
+

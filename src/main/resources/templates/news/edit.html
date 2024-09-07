@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit News</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <script>
+        function addFileInput() {
+            var container = document.getElementById("fileInputs");
+            var input = document.createElement("input");
+            input.type = "file";
+            input.name = "imageFiles";
+            container.appendChild(input);
+            container.appendChild(document.createElement("br"));
+        }
+    </script>
+</head>
+<body>
+<h1>Edit News</h1>
+<form th:action="@{/api/admin/news/update/{id}(id=${news.id})}" th:object="${news}" method="post" enctype="multipart/form-data">
+    <input type="hidden" th:field="*{id}" />
+    <label>Date:</label>
+    <input type="text" th:field="*{date}" /><br/>
+    <label>Activity:</label>
+    <input type="text" th:field="*{activity}" /><br/>
+    <label>Content:</label>
+    <textarea th:field="*{content}"></textarea><br/>
+    <label>Images:</label>
+    <div id="fileInputs">
+        <div th:each="imageUrl, iterStat : ${news.imageUrls}">
+            <input type="file" name="imageFiles" /><br/>
+        </div>
+    </div>
+    <button type="button" onclick="addFileInput()">Add More Images</button><br/>
+    <button type="submit">Update</button>
+</form>
+</body>
+</html>
