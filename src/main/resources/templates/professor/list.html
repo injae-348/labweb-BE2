@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Professor Details</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <script>
+        function confirmDelete(id, type) {
+            if (confirm("진짜 삭제하실건가요?")) {
+                window.location.href = `/api/admin/professors/${type}/delete/${id}`;
+            }
+        }
+    </script>
+</head>
+<body>
+<h1>Professor Details</h1>
+<button onclick="location.href='/api/admin'">Go to Admin Page</button>
+<div>
+    <h2>Professor Information</h2>
+    <p th:text="${professorPage.professor.name}"></p>
+    <p th:text="${professorPage.professor.major}"></p>
+    <p th:text="${professorPage.professor.university}"></p>
+    <p th:text="${professorPage.professor.mobilePhone}"></p>
+    <p th:text="${professorPage.professor.email}"></p>
+    <p th:text="${professorPage.professor.officePhone}"></p>
+    <p th:text="${professorPage.professor.officeLocationKR}"></p>
+    <p th:text="${professorPage.professor.officeLocationEN}"></p>
+    <a th:href="@{/api/admin/professors/edit/{id}(id=${professorPage.professor.id})}">Edit</a>
+</div>
+<div>
+    <h2>Career List</h2>
+    <a th:href="@{/api/admin/career/create}"><button>Create Career</button></a>
+    <ul>
+        <li th:each="career : ${professorPage.careers}">
+            <p th:text="'기간: ' + ${career.experienceYear()}"></p>
+            <p th:text="'학위: ' + ${career.career()}"></p>
+            <p th:text="'학위 (자세히): ' + ${career.careerDetailKR()}"></p>
+            <p th:text="'학위 (자세히): ' + ${career.careerDetailEN()}"></p>
+            <a th:href="@{/api/admin/professors/career/edit/{id}(id=${career.id})}">Edit</a>
+            <a href="javascript:void(0);" th:onclick="'confirmDelete(' + ${career.id} + ', \'career\')'">Delete</a>
+        </li>
+    </ul>
+</div>
+<div>
+    <h2>Education List</h2>
+    <a th:href="@{/api/admin/education/create}"><button>Create Education</button></a>
+    <ul>
+        <li th:each="education : ${professorPage.educations}">
+            <p th:text="'기간: ' + ${education.experienceYear()}"></p>
+            <p th:text="'경력: ' + ${education.degreeSummary()}"></p>
+            <p th:text="'경력 (자세히): ' + ${education.degreeDetailKR()}"></p>
+            <p th:text="'경력 (자세히): ' + ${education.degreeDetailEN()}"></p>
+            <a th:href="@{/api/admin/professors/education/edit/{id}(id=${education.id})}">Edit</a>
+            <a href="javascript:void(0);" th:onclick="'confirmDelete(' + ${education.id} + ', \'education\')'">Delete</a>
+        </li>
+    </ul>
+</div>
+<div>
+    <h2>Research List</h2>
+    <a th:href="@{/api/admin/research/create}"><button>Create Research</button></a>
+    <ul>
+        <li th:each="research : ${professorPage.researchPages}">
+            <p th:text="'Title: ' + ${research.title}"></p>
+            <p th:text="'URL: ' + ${research.url}"></p>
+            <a th:href="@{/api/admin/professors/research/edit/{id}(id=${research.id})}">Edit</a>
+            <a href="javascript:void(0);" th:onclick="'confirmDelete(' + ${research.id} + ', \'research\')'">Delete</a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
