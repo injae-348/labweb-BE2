@@ -83,4 +83,8 @@ public class Professor extends BaseEntity {
         this.officeLocationEN = profReqDto.officeLocationEN();
         this.imageFiles = imageFiles;
     }
+
+    public void addImage(UploadFile image) {
+        this.imageFiles = image;
+    }
 }
