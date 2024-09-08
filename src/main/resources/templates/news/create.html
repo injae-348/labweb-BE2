@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Edit News</title>
+    <title>Create News</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
     <script>
-        let fileInputCount = 0;
+        let fileInputCount = 1;
 
         function addFileInput() {
             const fileInputsContainer = document.getElementById('fileInputs');
@@ -33,19 +33,14 @@
 
         function removeFileInput(button) {
             const wrapper = button.closest('.file-input-wrapper');
-            wrapper.remove();
+            const id = wrapper.id.split('-').pop();
+            document.getElementById('file-input-' + id).remove();
         }
     </script>
 </head>
 <body>
-<h1>Edit News</h1>
-<form th:action="@{/api/admin/news/update/{id}(id=${news.id})}" th:object="${news}" method="post" enctype="multipart/form-data">
-    <input type="hidden" th:field="*{id}" />
-    <div>
-        <label for="date">Date:</label>
-        <!--th:field="*{date}를 주면 이 datetime-local이 아닌 다른 형식으로 옴 내가 봄 -> 필드에 date형식 지정해버림-->
-        <input type="datetime-local" id="date" th:field="*{date}" required />
-    </div>
+<h1>Create News</h1>
+<form th:action="@{/api/admin/news/create}" th:object="${newsReqDto}" method="post" enctype="multipart/form-data">
     <div>
         <label for="activity">Activity:</label>
         <input type="text" id="activity" th:field="*{activity}" required />
@@ -55,12 +50,14 @@
         <textarea id="content" th:field="*{content}" required></textarea>
     </div>
     <div>
+        <label for="date">Date:</label>
+        <input type="datetime-local" id="date" th:field="*{date}" required />
+    </div>
+    <div>
         <label>Images:</label>
         <div id="fileInputs">
-            <div th:each="imageUrl, iterStat : ${news.imageUrls}" class="file-input-wrapper" th:id="'image-' + ${iterStat.index}">
-                <img th:src="@{${imageUrl}}" alt="News Image" style="max-width: 100px; max-height: 100px;"/>
-                <a th:href="@{${imageUrl}}" target="_blank" download="image-${iterStat.index}">Download</a>
-                <input type="hidden" th:field="*{imageUrls[__${iterStat.index}__]}" />
+            <div class="file-input-wrapper" id="file-input-0">
+                <input type="file" name="imageFiles" multiple />
                 <button type="button" onclick="removeFileInput(this)">Remove</button>
             </div>
         </div>
@@ -72,7 +69,7 @@
         <button type="button" onclick="addFileInput()">Add More Images</button>
     </div>
     <div>
-        <button type="submit">Update</button>
+        <button type="submit">Create</button>
     </div>
 </form>
 </body>
