@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 @Builder
 public record CareerResDto(
+        Long id,
         String experienceYear,
         String career,
         String careerDetailKR,
@@ -16,6 +17,7 @@ public record CareerResDto(
 
     public static CareerResDto of(Career career) {
         return CareerResDto.builder()
+                .id(career.getId())
                 .experienceYear(career.getExperienceYear())
                 .career(career.getCareer())
                 .careerDetailKR(career.getCareerDetailKR())
