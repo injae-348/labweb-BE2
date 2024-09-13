@@ -1,21 +1,21 @@
 package lab.dev.admin.controller;
 
 
+import lab.dev.file.domain.UploadFile;
 import lab.dev.file.service.FileService;
 import lab.dev.news.dto.NewsReqDto;
 import lab.dev.news.dto.NewsResDto;
 import lab.dev.news.dto.NewsUpdateResDto;
 import lab.dev.news.service.NewsService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import lab.dev.file.domain.UploadFile;
 import org.springframework.web.util.UriUtils;
 
 import java.net.MalformedURLException;
@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/api/admin/news")
@@ -58,45 +59,56 @@ public class NewsAdminController {
         return "redirect:/api/admin/news";
     }
 
-    @GetMapping("/edit/{id}") // 뉴스 수정 페이지
+    @GetMapping("/edit/{news-id}") // 뉴스 수정 페이지
     public String editNews(
-            @PathVariable Long id,
+            @PathVariable(name = "news-id") Long newsId,
             Model model
     ) {
-        NewsUpdateResDto news = newsService.getUpdateNews(id);
+        NewsUpdateResDto news = newsService.getUpdateNews(newsId);
         model.addAttribute("news", news);
         return "news/edit";
     }
 
-    @PostMapping("/update/{id}") // 뉴스 수정
+    @PostMapping("/update/{news-id}") // 뉴스 수정
     public String updateNews(
-            @PathVariable Long id,
+            @PathVariable(name = "news-id") Long newsId,
             @ModelAttribute NewsReqDto newsReqDto
     ) {
-        newsService.updateNews(id, newsReqDto);
+        newsService.updateNews(newsId, newsReqDto);
         return "redirect:/api/admin/news";
     }
 
-    @GetMapping("/delete/{id}") // 뉴스 삭제
+    @GetMapping("/delete/{news-id}") // 뉴스 삭제
     public String deleteNews(
-            @PathVariable Long id
+            @PathVariable(name = "news-id") Long newsId
     ) {
-        newsService.deleteNews(id);
+        newsService.deleteNews(newsId);
         return "redirect:/api/admin/news";
     }
 
-    @GetMapping("/files/{filename}")
+    @GetMapping("/{news-id}/files/{filename}")
     public ResponseEntity<Resource> downloadFile(
+            @PathVariable(name = "news-id") Long newsId,
             @PathVariable String filename
-    ) {
-        UploadFile file = fileService.getFile(filename);
-        Resource resource = fileService.loadFileAsResource(filename);
+    ) throws MalformedURLException {
+
+        NewsUpdateResDto news = newsService.getUpdateNews(newsId);
+        UploadFile file = news.imageFiles().stream()
+                .filter(uploadFile -> uploadFile.getStoredFilename().equals(filename))
+                .findFirst()
+                .orElseThrow();
+
+        UrlResource resource = new UrlResource("file:" + fileService.getFullPath(filename));
+
+        log.info("originalFilename={}", file.getOriginalFilename());
+        log.info("storedFilename={}", file.getStoredFilename());
+
+        log.info("resource={}", resource);
 
         String encodedUploadFilename = UriUtils.encode(file.getOriginalFilename(), StandardCharsets.UTF_8);
         String contentDisposition = "attachment; filename=\"" + encodedUploadFilename + "\"";
 
         return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(fileService.getMimeType(filename)))
                 .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
                 .body(resource);
     }

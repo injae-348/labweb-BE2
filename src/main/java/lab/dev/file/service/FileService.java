@@ -3,6 +3,7 @@ package lab.dev.file.service;
 import lab.dev.file.domain.UploadFile;
 import lab.dev.file.exception.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class FileService {
@@ -28,28 +30,6 @@ public class FileService {
 
     public String getFullPath(String filename) {
         return fileDir + filename;
-    }
-
-    public UploadFile getFile(String filename) {
-        Path filePath = Paths.get(getFullPath(filename)).normalize();
-        if (!Files.exists(filePath) || !filePath.startsWith(getFullPath(""))) {
-            throw FileNotFoundException.EXCEPTION;
-        }
-        try {
-            String originalFilename = Files.readAllLines(Paths.get(getFullPath(filename + ".meta"))).get(0);
-            return new UploadFile(originalFilename, filename);
-        } catch (IOException e) {
-            throw FileNotFoundException.EXCEPTION;
-        }
-    }
-
-    public String getMimeType(String filename) {
-        try {
-            Path filePath = Paths.get(getFullPath(filename));
-            return Files.probeContentType(filePath);
-        } catch (IOException e) {
-            return "application/octet-stream";
-        }
     }
 
     public Resource loadFileAsResource(String filename) {

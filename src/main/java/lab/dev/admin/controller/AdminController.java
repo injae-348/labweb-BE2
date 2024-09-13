@@ -1,12 +1,14 @@
 package lab.dev.admin.controller;
 
-import lombok.Getter;
+import lab.dev.file.service.FileService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
+
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/api/admin")
@@ -16,4 +18,5 @@ public class AdminController {
     public String admin() {
         return "admin/index";
     }
+
 }
