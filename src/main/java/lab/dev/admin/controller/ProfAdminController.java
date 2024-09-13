@@ -23,6 +23,8 @@ public class ProfAdminController {
 
     // Todo: 경력, 학력, 연구 수정&생성 -> html 추가(edit, create)
     // Todo: 교수 정보 수정 -> html 추가(edit)
+    // Todo: 총 7개의 html 추가
+    // Todo: Professor 관련 테스트 코드 작성(Professor & Career만 작성)
 
     @GetMapping // 정보, 경력, 학력, 연구 리스트 조회
     public String getProfessorDetail(

@@ -48,7 +48,8 @@ public class NewsAdminController {
 
     @GetMapping("/edit/{id}") // 뉴스 수정 페이지
     public String editNews(
-            @PathVariable Long id, Model model
+            @PathVariable Long id,
+            Model model
     ) {
         NewsResDto news = newsService.getNews(id);
         model.addAttribute("news", news);
