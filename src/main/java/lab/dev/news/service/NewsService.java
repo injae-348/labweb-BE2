@@ -7,6 +7,7 @@ import lab.dev.file.service.FileService;
 import lab.dev.news.domain.News;
 import lab.dev.news.dto.NewsReqDto;
 import lab.dev.news.dto.NewsResDto;
+import lab.dev.news.dto.NewsUpdateResDto;
 import lab.dev.news.exception.NewsNotFoundException;
 import lab.dev.news.repository.NewsRepository;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +45,12 @@ public class NewsService {
     public NewsResDto getNews(Long newsId) {
         News news = findNewsByIdOrThrow(newsId);
         return toResDto(news);
+    }
+
+    @Transactional(readOnly = true) // 단일 뉴스 업데이트 Response
+    public NewsUpdateResDto getUpdateNews(Long newsId) {
+        News news = findNewsByIdOrThrow(newsId);
+        return toUpdateResDto(news);
     }
 
     @Transactional // 뉴스 생성
@@ -106,6 +113,18 @@ public class NewsService {
                 )
                 .build();
     }
+
+    // News -> NewsUpdateResDto
+    private NewsUpdateResDto toUpdateResDto(News news) {
+        return NewsUpdateResDto.builder()
+                .id(news.getId())
+                .date(news.getDate())
+                .activity(news.getActivity())
+                .content(news.getContent())
+                .imageFiles(news.getImageFiles())
+                .build();
+    }
+
 
     // NewsReqDto 필드 검증
     private void validateNewsReqDto(NewsReqDto newsReqDto) {
