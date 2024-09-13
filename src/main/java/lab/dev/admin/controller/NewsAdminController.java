@@ -1,15 +1,26 @@
 package lab.dev.admin.controller;
 
+
+import lab.dev.file.service.FileService;
 import lab.dev.news.dto.NewsReqDto;
 import lab.dev.news.dto.NewsResDto;
+import lab.dev.news.dto.NewsUpdateResDto;
 import lab.dev.news.service.NewsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import lab.dev.file.domain.UploadFile;
+import org.springframework.web.util.UriUtils;
 
+import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +30,7 @@ import java.util.List;
 public class NewsAdminController {
 
     private final NewsService newsService;
+    private final FileService fileService;
 
     @GetMapping // 뉴스 리스트 조회
     public String listNews(
@@ -51,7 +63,7 @@ public class NewsAdminController {
             @PathVariable Long id,
             Model model
     ) {
-        NewsResDto news = newsService.getNews(id);
+        NewsUpdateResDto news = newsService.getUpdateNews(id);
         model.addAttribute("news", news);
         return "news/edit";
     }
@@ -71,5 +83,21 @@ public class NewsAdminController {
     ) {
         newsService.deleteNews(id);
         return "redirect:/api/admin/news";
+    }
+
+    @GetMapping("/files/{filename}")
+    public ResponseEntity<Resource> downloadFile(
+            @PathVariable String filename
+    ) {
+        UploadFile file = fileService.getFile(filename);
+        Resource resource = fileService.loadFileAsResource(filename);
+
+        String encodedUploadFilename = UriUtils.encode(file.getOriginalFilename(), StandardCharsets.UTF_8);
+        String contentDisposition = "attachment; filename=\"" + encodedUploadFilename + "\"";
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(fileService.getMimeType(filename)))
+                .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
+                .body(resource);
     }
 }
