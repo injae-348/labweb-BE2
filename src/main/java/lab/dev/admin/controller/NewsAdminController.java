@@ -100,11 +100,6 @@ public class NewsAdminController {
 
         UrlResource resource = new UrlResource("file:" + fileService.getFullPath(filename));
 
-        log.info("originalFilename={}", file.getOriginalFilename());
-        log.info("storedFilename={}", file.getStoredFilename());
-
-        log.info("resource={}", resource);
-
         String encodedUploadFilename = UriUtils.encode(file.getOriginalFilename(), StandardCharsets.UTF_8);
         String contentDisposition = "attachment; filename=\"" + encodedUploadFilename + "\"";
 
