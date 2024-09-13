@@ -81,8 +81,9 @@
     <div>
         <label>Images:</label>
         <div id="fileInputs">
-            <div th:each="file : *{imageFiles}" class="file-input-wrapper">
-                <a th:href="@{|/api/admin/files/${file.storedFilename}|}" th:text="${file.originalFilename}" download>Download</a>
+
+            <div th:each="file : *{imageFiles}" class="file-input-wrapper" th:with="newsId=${news.id}">
+                <a th:href="@{|/api/admin/news/${newsId}/files/${file.storedFilename}|}" th:text="${file.originalFilename}" download>Download</a>
                 <button type="button" class="remove-file-btn" onclick="removeExistingFile(this)">Remove</button>
             </div>
         </div>
