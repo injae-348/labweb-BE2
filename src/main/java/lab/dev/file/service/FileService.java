@@ -30,6 +30,28 @@ public class FileService {
         return fileDir + filename;
     }
 
+    public UploadFile getFile(String filename) {
+        Path filePath = Paths.get(getFullPath(filename)).normalize();
+        if (!Files.exists(filePath) || !filePath.startsWith(getFullPath(""))) {
+            throw FileNotFoundException.EXCEPTION;
+        }
+        try {
+            String originalFilename = Files.readAllLines(Paths.get(getFullPath(filename + ".meta"))).get(0);
+            return new UploadFile(originalFilename, filename);
+        } catch (IOException e) {
+            throw FileNotFoundException.EXCEPTION;
+        }
+    }
+
+    public String getMimeType(String filename) {
+        try {
+            Path filePath = Paths.get(getFullPath(filename));
+            return Files.probeContentType(filePath);
+        } catch (IOException e) {
+            return "application/octet-stream";
+        }
+    }
+
     public Resource loadFileAsResource(String filename) {
         if (filename.contains("..")) {
             throw FileTypeNotAllowedException.EXCEPTION;
