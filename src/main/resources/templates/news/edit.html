@@ -20,8 +20,9 @@
             const removeButton = document.createElement('button');
             removeButton.type = 'button';
             removeButton.textContent = 'Remove';
+            removeButton.className = 'remove-file-btn';
             removeButton.onclick = function() {
-                removeFileInput(this);
+                removeFileInput(fileInputDiv.id);
             };
 
             fileInputDiv.appendChild(fileInput);
@@ -31,19 +32,42 @@
             fileInputCount++;
         }
 
-        function removeFileInput(button) {
-            const wrapper = button.closest('.file-input-wrapper');
-            wrapper.remove();
+        function removeFileInput(id) {
+            const wrapper = document.getElementById(id);
+            if (wrapper) {
+                wrapper.remove();
+            }
+        }
+
+        function removeExistingFile(element) {
+            const fileWrapper = element.closest('.file-input-wrapper');
+            if (fileWrapper) {
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'filesToDelete';
+                hiddenInput.value = element.previousElementSibling.href.split('/').pop();
+                document.querySelector('form').appendChild(hiddenInput);
+
+                fileWrapper.remove();
+            }
+        }
+
+        window.onload = function() {
+            const existingFileInputs = document.querySelectorAll('#fileInputs > div');
+            existingFileInputs.forEach((div, index) => {
+                div.id = 'existing-file-' + index;
+                div.className = 'file-input-wrapper';
+            });
         }
     </script>
 </head>
 <body>
 <h1>Edit News</h1>
+<button onclick="location.href='/api/admin/news'">뉴스 리스트 페이지</button>
 <form th:action="@{/api/admin/news/update/{id}(id=${news.id})}" th:object="${news}" method="post" enctype="multipart/form-data">
     <input type="hidden" th:field="*{id}" />
     <div>
         <label for="date">Date:</label>
-        <!--th:field="*{date}를 주면 이 datetime-local이 아닌 다른 형식으로 옴 내가 봄 -> 필드에 date형식 지정해버림-->
         <input type="datetime-local" id="date" th:field="*{date}" required />
     </div>
     <div>
@@ -57,16 +81,17 @@
     <div>
         <label>Images:</label>
         <div id="fileInputs">
-            <div th:each="imageUrl, iterStat : ${news.imageUrls}" class="file-input-wrapper" th:id="'image-' + ${iterStat.index}">
-                <img th:src="@{${imageUrl}}" alt="News Image" style="max-width: 100px; max-height: 100px;"/>
-                <a th:href="@{${imageUrl}}" target="_blank" download="image-${iterStat.index}">Download</a>
-                <input type="hidden" th:field="*{imageUrls[__${iterStat.index}__]}" />
-                <button type="button" onclick="removeFileInput(this)">Remove</button>
+            <div th:each="file : *{imageFiles}" class="file-input-wrapper">
+                <a th:href="@{|/api/files/${file.storedFilename}|}" th:text="${file.originalFilename}" download>Download</a>
+                <button type="button" class="remove-file-btn" onclick="removeExistingFile(this)">Remove</button>
             </div>
         </div>
     </div>
     <div>
-        이미지는 최대 10장, 개당 1MB 이하로 업로드 가능합니다. (총합 10MB 제한)
+        이미지는 최대 10장, 개당 1MB 이하로 업로드 가능합니다. (총합 10MB 제한)<br>
+        <span style="color: red">주의 : 기존 이미지는 Update 버튼 클릭 시 삭제 됩니다!!</span><br>
+        <span style="color: red">만일 기존 이미지가 필요하다면 꼭 다운로드 후 파일 추가를 통해 다시 업로드 시켜주세요</span>
+        <span style="color: red">이미지 이름 클릭시 다운로드 됩니다!</span>
     </div>
     <div>
         <button type="button" onclick="addFileInput()">Add More Images</button>
