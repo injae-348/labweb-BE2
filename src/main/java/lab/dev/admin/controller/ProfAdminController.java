@@ -22,7 +22,7 @@ public class ProfAdminController {
     private final ResearchPageService researchPageService;
 
     // Todo: 경력, 학력, 연구 수정&생성 -> html 추가(edit, create)
-    // Todo: 교수 정보 수정 -> html 추가(edit)
+    // Todo: 교수 정보 수정 -> html 추가(edit), ProfessorUpdateResDto 추가
     // Todo: 총 7개의 html 추가
     // Todo: Professor 관련 테스트 코드 작성(Professor & Career만 작성)
 
@@ -85,30 +85,30 @@ public class ProfAdminController {
         return "redirect:/api/admin/professors";
     }
 
-    @GetMapping("/career/edit/{id}") // 경력 수정 페이지
+    @GetMapping("/career/edit/{career-id}") // 경력 수정 페이지
     public String editCareerForm(
-            @PathVariable Long id,
+            @PathVariable(name = "career-id") Long careerId,
             Model model
     ) {
-        CareerResDto career = careerService.getCareer(id);
+        CareerResDto career = careerService.getCareer(careerId);
         model.addAttribute("career", career);
         return "professor/career/edit";
     }
 
-    @PostMapping("/career/update/{id}") // 경력 수정
+    @PostMapping("/career/update/{career-id}") // 경력 수정
     public String editCareer(
-            @PathVariable Long id,
+            @PathVariable(name = "career-id") Long careerId,
             @ModelAttribute CareerReqDto career
     ) {
-        careerService.updateCareer(id, career);
+        careerService.updateCareer(careerId, career);
         return "redirect:/api/admin/professors";
     }
 
-    @GetMapping("/career/delete/{id}") // 경력 삭제
+    @GetMapping("/career/delete/{career-id}") // 경력 삭제
     public String deleteCareer(
-            @PathVariable Long id
+            @PathVariable(name = "career-id") Long careerId
     ) {
-        careerService.deleteCareer(id);
+        careerService.deleteCareer(careerId);
         return "redirect:/api/admin/professors";
     }
 
@@ -136,30 +136,30 @@ public class ProfAdminController {
         return "redirect:/api/admin/professors";
     }
 
-    @GetMapping("/education/edit/{id}") // 학력 수정 페이지
+    @GetMapping("/education/edit/{education-id}") // 학력 수정 페이지
     public String editEducationForm(
-            @PathVariable Long id,
+            @PathVariable(name = "education-id") Long educationId,
             Model model
     ) {
-        EduResDto education = educationService.getEducation(id);
+        EduResDto education = educationService.getEducation(educationId);
         model.addAttribute("education", education);
         return "professor/education/edit";
     }
 
-    @PostMapping("/education/update/{id}") // 학력 수정
+    @PostMapping("/education/update/{education-id}") // 학력 수정
     public String editEducation(
-            @PathVariable Long id,
+            @PathVariable(name = "education-id") Long educationId,
             @ModelAttribute EduReqDto education
     ) {
-        educationService.updateEducation(id, education);
+        educationService.updateEducation(educationId, education);
         return "redirect:/api/admin/professors";
     }
 
-    @GetMapping("/education/delete/{id}") // 학력 삭제
+    @GetMapping("/education/delete/{education-id}") // 학력 삭제
     public String deleteEducation(
-            @PathVariable Long id
+            @PathVariable(name = "education-id") Long educationId
     ) {
-        educationService.deleteEducation(id);
+        educationService.deleteEducation(educationId);
         return "redirect:/api/admin/professors";
     }
 
@@ -185,30 +185,30 @@ public class ProfAdminController {
         return "redirect:/api/admin/professors";
     }
 
-    @GetMapping("/research/edit/{id}") // 연구 수정 페이지
+    @GetMapping("/research/edit/{research-id}") // 연구 수정 페이지
     public String editResearchForm(
-            @PathVariable Long id,
+            @PathVariable(name = "research-id") Long researchId,
             Model model
     ) {
-        ResearResDto research = researchPageService.getResearchPage(id);
+        ResearResDto research = researchPageService.getResearchPage(researchId);
         model.addAttribute("research", research);
         return "professor/research/edit";
     }
 
-    @PostMapping("/research/update/{id}") // 연구 수정
+    @PostMapping("/research/update/{research-id}") // 연구 수정
     public String editResearch(
-            @PathVariable Long id,
+            @PathVariable(name = "research-id") Long researchId,
             @ModelAttribute ResearReqDto research
     ) {
-        researchPageService.updateResearchPage(id, research);
+        researchPageService.updateResearchPage(researchId, research);
         return "redirect:/api/admin/professors";
     }
 
-    @GetMapping("/research/delete/{id}") // 연구 삭제
+    @GetMapping("/research/delete/{research-id}") // 연구 삭제
     public String deleteResearch(
-            @PathVariable Long id
+            @PathVariable(name = "research-id") Long researchId
     ) {
-        researchPageService.deleteResearchPage(id);
+        researchPageService.deleteResearchPage(researchId);
         return "redirect:/api/admin/professors";
     }
 }
