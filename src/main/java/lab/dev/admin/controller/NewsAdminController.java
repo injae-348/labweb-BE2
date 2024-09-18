@@ -60,7 +60,7 @@ public class NewsAdminController {
     }
 
     @GetMapping("/edit/{news-id}") // 뉴스 수정 페이지
-    public String editNews(
+    public String editNewsForm(
             @PathVariable(name = "news-id") Long newsId,
             Model model
     ) {
@@ -69,8 +69,8 @@ public class NewsAdminController {
         return "news/edit";
     }
 
-    @PostMapping("/update/{news-id}") // 뉴스 수정
-    public String updateNews(
+    @PostMapping("/edit/{news-id}") // 뉴스 수정
+    public String editNews(
             @PathVariable(name = "news-id") Long newsId,
             @ModelAttribute NewsReqDto newsReqDto
     ) {
@@ -78,7 +78,7 @@ public class NewsAdminController {
         return "redirect:/api/admin/news";
     }
 
-    @GetMapping("/delete/{news-id}") // 뉴스 삭제
+    @PostMapping("/delete/{news-id}") // 뉴스 삭제
     public String deleteNews(
             @PathVariable(name = "news-id") Long newsId
     ) {

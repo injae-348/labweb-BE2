@@ -56,12 +56,12 @@ public class ProfAdminController {
             @PathVariable("professor-id") Long professorId,
             Model model
     ) {
-        ProfResDto professor = professorService.getProfessor(professorId);
+        ProfUpdateResDto professor = professorService.getUpdateProfessor(professorId);
         model.addAttribute("professor", professor);
         return "professor/edit";
     }
 
-    @PutMapping("/edit/{professor-id}") // 정보 수정
+    @PostMapping("/edit/{professor-id}") // 정보 수정
     public String editProfessor(
             @PathVariable("professor-id") Long professorId,
             @ModelAttribute ProfReqDto professor
@@ -75,8 +75,8 @@ public class ProfAdminController {
             @PathVariable String filename
     ) throws MalformedURLException {
 
-        ProfResDto professor = professorService.getProfessor(1L);
-        UploadFile file = new UploadFile("1","1");
+        ProfUpdateResDto professor = professorService.getUpdateProfessor(1L);
+        UploadFile file = professor.imageFiles();
 
         UrlResource resource = new UrlResource("file:" + fileService.getFullPath(filename));
 
@@ -122,7 +122,7 @@ public class ProfAdminController {
         return "professor/career/edit";
     }
 
-    @PutMapping("/career/update/{career-id}") // 경력 수정
+    @PostMapping("/career/update/{career-id}") // 경력 수정
     public String editCareer(
             @PathVariable(name = "career-id") Long careerId,
             @ModelAttribute CareerReqDto career
@@ -131,7 +131,7 @@ public class ProfAdminController {
         return "redirect:/api/admin/professors";
     }
 
-    @DeleteMapping("/career/delete/{career-id}") // 경력 삭제
+    @GetMapping("/career/delete/{career-id}") // 경력 삭제
     public String deleteCareer(
             @PathVariable(name = "career-id") Long careerId
     ) {
@@ -173,7 +173,7 @@ public class ProfAdminController {
         return "professor/education/edit";
     }
 
-    @PutMapping("/education/update/{education-id}") // 학력 수정
+    @PostMapping("/education/update/{education-id}") // 학력 수정
     public String editEducation(
             @PathVariable(name = "education-id") Long educationId,
             @ModelAttribute EduReqDto education
@@ -182,7 +182,7 @@ public class ProfAdminController {
         return "redirect:/api/admin/professors";
     }
 
-    @DeleteMapping("/education/delete/{education-id}") // 학력 삭제
+    @GetMapping("/education/delete/{education-id}") // 학력 삭제
     public String deleteEducation(
             @PathVariable(name = "education-id") Long educationId
     ) {
@@ -222,7 +222,7 @@ public class ProfAdminController {
         return "professor/research/edit";
     }
 
-    @PutMapping("/research/update/{research-id}") // 연구 수정
+    @PostMapping("/research/update/{research-id}") // 연구 수정
     public String editResearch(
             @PathVariable(name = "research-id") Long researchId,
             @ModelAttribute ResearReqDto research
@@ -231,7 +231,7 @@ public class ProfAdminController {
         return "redirect:/api/admin/professors";
     }
 
-    @DeleteMapping("/research/delete/{research-id}") // 연구 삭제
+    @GetMapping("/research/delete/{research-id}") // 연구 삭제
     public String deleteResearch(
             @PathVariable(name = "research-id") Long researchId
     ) {
