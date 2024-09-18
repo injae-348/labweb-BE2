@@ -79,7 +79,11 @@
                 <li th:each="research : ${professorPage.researchPages}" class="list-item">
                     <div class="item-info">
                         <p><strong>Title:</strong> <span th:text="${research.title}"></span></p>
-                        <p><strong>URL:</strong> <span th:text="${research.url}"></span></p>
+                        <p>
+                            <strong>URL:</strong>
+                            <!-- URL을 클릭할 수 있는 링크로 변환 -->
+                            <a th:href="${research.url}" th:text="${research.url}" target="_blank"></a>
+                        </p>
                     </div>
                     <div class="item-actions">
                         <a th:href="@{/api/admin/professors/research/edit/{id}(id=${research.id})}" class="btn btn-secondary">Edit</a>
