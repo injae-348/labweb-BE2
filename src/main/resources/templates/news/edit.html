@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Edit News</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/news-edit-styles.css}" />
     <script>
         let fileInputCount = 0;
 
@@ -16,11 +16,12 @@
             fileInput.type = 'file';
             fileInput.name = 'imageFiles';
             fileInput.multiple = true;
+            fileInput.className = 'file-input';
 
             const removeButton = document.createElement('button');
             removeButton.type = 'button';
             removeButton.textContent = 'Remove';
-            removeButton.className = 'remove-file-btn';
+            removeButton.className = 'btn btn-remove';
             removeButton.onclick = function() {
                 removeFileInput(fileInputDiv.id);
             };
@@ -62,44 +63,47 @@
     </script>
 </head>
 <body>
-<h1>Edit News</h1>
-<button onclick="location.href='/api/admin/news'">뉴스 리스트 페이지</button>
-<form th:action="@{/api/admin/news/update/{id}(id=${news.id})}" th:object="${news}" method="post" enctype="multipart/form-data">
-    <input type="hidden" th:field="*{id}" />
-    <div>
-        <label for="date">Date:</label>
-        <input type="datetime-local" id="date" th:field="*{date}" required />
-    </div>
-    <div>
-        <label for="activity">Activity:</label>
-        <input type="text" id="activity" th:field="*{activity}" required />
-    </div>
-    <div>
-        <label for="content">Content:</label>
-        <textarea id="content" th:field="*{content}" required></textarea>
-    </div>
-    <div>
-        <label>Images:</label>
-        <div id="fileInputs">
-
-            <div th:each="file : *{imageFiles}" class="file-input-wrapper" th:with="newsId=${news.id}">
-                <a th:href="@{|/api/admin/news/${newsId}/files/${file.storedFilename}|}" th:text="${file.originalFilename}" download>Download</a>
-                <button type="button" class="remove-file-btn" onclick="removeExistingFile(this)">Remove</button>
+<div class="container">
+    <header class="page-header">
+        <h1 class="page-title">Edit News</h1>
+        <button onclick="location.href='/api/admin/news'" class="btn btn-secondary">뉴스 리스트 페이지</button>
+    </header>
+    <main class="main-content">
+        <form th:action="@{/api/admin/news/update/{id}(id=${news.id})}" th:object="${news}" method="post" enctype="multipart/form-data" class="edit-form">
+            <input type="hidden" th:field="*{id}" />
+            <div class="form-group">
+                <label for="date">Date:</label>
+                <input type="datetime-local" id="date" th:field="*{date}" required class="form-input" />
             </div>
-        </div>
-    </div>
-    <div>
-        이미지는 최대 10장, 개당 1MB 이하로 업로드 가능합니다. (총합 10MB 제한)<br>
-        <span style="color: red">주의 : 기존 이미지는 Update 버튼 클릭 시 삭제 됩니다!!</span><br>
-        <span style="color: red">만일 기존 이미지가 필요하다면 꼭 다운로드 후 파일 추가를 통해 다시 업로드 시켜주세요</span>
-        <span style="color: red">이미지 이름 클릭시 다운로드 됩니다!</span>
-    </div>
-    <div>
-        <button type="button" onclick="addFileInput()">Add More Images</button>
-    </div>
-    <div>
-        <button type="submit">Update</button>
-    </div>
-</form>
+            <div class="form-group">
+                <label for="activity">Activity:</label>
+                <input type="text" id="activity" th:field="*{activity}" required class="form-input" />
+            </div>
+            <div class="form-group">
+                <label for="content">Content:</label>
+                <textarea id="content" th:field="*{content}" required class="form-input"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Images:</label>
+                <div id="fileInputs" class="file-input-container">
+                    <div th:each="file : *{imageFiles}" class="file-input-wrapper" th:with="newsId=${news.id}">
+                        <a th:href="@{|/api/admin/news/${newsId}/files/${file.storedFilename}|}" th:text="${file.originalFilename}" download class="file-link">Download</a>
+                        <button type="button" class="btn btn-remove" onclick="removeExistingFile(this)">Remove</button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-info">
+                <p>이미지는 최대 10장, 개당 1MB 이하로 업로드 가능합니다. (총합 10MB 제한)</p>
+                <p class="warning">주의 : 기존 이미지는 Update 버튼 클릭 시 삭제 됩니다!!</p>
+                <p class="warning">만일 기존 이미지가 필요하다면 꼭 다운로드 후 파일 추가를 통해 다시 업로드 시켜주세요</p>
+                <p class="warning">이미지 이름 클릭시 다운로드 됩니다!</p>
+            </div>
+            <div class="form-actions">
+                <button type="button" onclick="addFileInput()" class="btn btn-secondary">Add More Images</button>
+                <button type="submit" class="btn btn-primary">Update</button>
+            </div>
+        </form>
+    </main>
+</div>
 </body>
 </html>

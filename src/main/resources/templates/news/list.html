@@ -2,51 +2,55 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>News List</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/news-list-styles.css}" />
     <script>
         function confirmDelete(id) {
             if (confirm("진짜 삭제하실건가요?")) {
-                // 확인을 눌렀을 때만 삭제 URL로 이동
                 window.location.href = `/api/admin/news/delete/${id}`;
             }
         }
     </script>
 </head>
 <body>
-<h1>News List</h1>
-<a th:href="@{/api/admin/news/create}"><button>Create News</button></a>
-<button onclick="location.href='/api/admin'">메인 페이지</button>
-<table>
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Date</th>
-        <th>Activity</th>
-        <th>Content</th>
-        <th>Image</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="news : ${newsList}">
-        <td th:text="${news.id}"></td>
+<div class="container">
+    <header class="page-header">
+        <h1 class="page-title">News List</h1>
+        <nav class="nav-buttons">
+            <button onclick="location.href='/api/admin'" class="btn btn-secondary">메인 페이지</button>
+            <a th:href="@{/api/admin/news/create}" class="btn btn-primary">Create News</a>
+        </nav>
+    </header>
 
-        <td th:text="${#temporals.format(news.date, 'yyyy-MM-dd')}"></td>
-        <td th:text="${news.activity}"></td>
-        <td th:text="${news.content}"></td>
-        <td>
-            <div th:each="imageUrl : ${news.imageUrls}">
-                <img th:src="@{${imageUrl}}" alt="News Image" style="max-width: 100px; max-height: 100px;"/>
-            </div>
-        </td>
-        <td>
-            <a th:href="@{/api/admin/news/edit/{id}(id=${news.id})}">Edit</a>
-            <span>OR</span>
-            <!-- href를 제거하고 onclick 이벤트만 사용 -->
-            <a href="javascript:void(0);" th:onclick="'confirmDelete(' + ${news.id} + ')'">Delete</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
+    <main class="news-list">
+        <table class="news-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Activity</th>
+                <th>Content</th>
+                <th>Image</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="news : ${newsList}">
+                <td th:text="${news.id}"></td>
+                <td th:text="${#temporals.format(news.date, 'yyyy-MM-dd')}"></td>
+                <td th:text="${news.activity}"></td>
+                <td th:text="${news.content}" class="news-content"></td>
+                <td class="news-images">
+                    <div th:each="imageUrl : ${news.imageUrls}" class="image-container">
+                        <img th:src="@{${imageUrl}}" alt="News Image" class="news-image"/>
+                    </div>
+                </td>
+                <td class="action-buttons">
+                    <a th:href="@{/api/admin/news/edit/{id}(id=${news.id})}" class="btn btn-edit">Edit</a>
+                    <a href="javascript:void(0);" th:onclick="'confirmDelete(' + ${news.id} + ')'" class="btn btn-delete">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </main>
+</div>
 </body>
 </html>
