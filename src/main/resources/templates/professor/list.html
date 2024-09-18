@@ -36,7 +36,7 @@
 
         <section class="career-list">
             <h2 class="section-title">Career List</h2>
-            <a th:href="@{/api/admin/career/create}" class="btn btn-primary">Create Career</a>
+            <a th:href="@{/api/admin/professors/career/create}" class="btn btn-primary">Create Career</a>
             <ul class="item-list">
                 <li th:each="career : ${professorPage.careers}" class="list-item">
                     <div class="item-info">
@@ -55,7 +55,7 @@
 
         <section class="education-list">
             <h2 class="section-title">Education List</h2>
-            <a th:href="@{/api/admin/education/create}" class="btn btn-primary">Create Education</a>
+            <a th:href="@{/api/admin/professors/education/create}" class="btn btn-primary">Create Education</a>
             <ul class="item-list">
                 <li th:each="education : ${professorPage.educations}" class="list-item">
                     <div class="item-info">
@@ -74,7 +74,7 @@
 
         <section class="research-list">
             <h2 class="section-title">Research List</h2>
-            <a th:href="@{/api/admin/research/create}" class="btn btn-primary">Create Research</a>
+            <a th:href="@{/api/admin/professors/research/create}" class="btn btn-primary">Create Research</a>
             <ul class="item-list">
                 <li th:each="research : ${professorPage.researchPages}" class="list-item">
                     <div class="item-info">
