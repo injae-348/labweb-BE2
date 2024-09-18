@@ -54,6 +54,12 @@ public class ProfessorService {
         return ProfResDto.of(updatedProfessor);
     }
 
+    @Transactional
+    public ProfUpdateResDto getUpdateProfessor(Long id) {
+        Professor professor = findProfessorByIdOrThrow(id);
+        return ProfUpdateResDto.of(professor);
+    }
+
     private static String getStoredFilename(Professor professor) {
         return professor.getImageFiles().getStoredFilename();
     }

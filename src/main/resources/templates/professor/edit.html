@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Professor</title>
+    <link rel="stylesheet" th:href="@{/css/professor-detail-edit-styles.css}" />
+</head>
+<body>
+<div class="container">
+    <header class="page-header">
+        <h1 class="page-title">Edit Professor</h1>
+    </header>
+
+    <main class="main-content">
+        <section class="professor-info">
+            <form th:action="@{/api/admin/professors/edit/{id}(id=${professor.id})}" th:object="${professor}" method="post" enctype="multipart/form-data" class="info-form">
+                <input type="hidden" th:field="*{id}" />
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" th:field="*{name}" required />
+                </div>
+                <div class="form-group">
+                    <label for="major">Major:</label>
+                    <input type="text" id="major" th:field="*{major}" required />
+                </div>
+                <div class="form-group">
+                    <label for="university">University:</label>
+                    <input type="text" id="university" th:field="*{university}" required />
+                </div>
+                <div class="form-group">
+                    <label for="mobilePhone">Mobile Phone:</label>
+                    <input type="text" id="mobilePhone" th:field="*{mobilePhone}" required />
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" th:field="*{email}" required />
+                </div>
+                <div class="form-group">
+                    <label for="officePhone">Office Phone:</label>
+                    <input type="text" id="officePhone" th:field="*{officePhone}" required />
+                </div>
+                <div class="form-group">
+                    <label for="officeLocationKR">Office Location (KR):</label>
+                    <input type="text" id="officeLocationKR" th:field="*{officeLocationKR}" required />
+                </div>
+                <div class="form-group">
+                    <label for="officeLocationEN">Office Location (EN):</label>
+                    <input type="text" id="officeLocationEN" th:field="*{officeLocationEN}" required />
+                </div>
+                <div class="form-group">
+                    <div class="form-group">
+                        <label for="imageFiles">Profile Image:</label>
+                        <input type="file" id="imageFiles" name="imageFiles" />
+                        <a th:href="@{|/api/admin/professors/files/${professor.imageFiles.storedFilename}|}" th:text="${professor.imageFiles.originalFilename}" download class="file-link">Download</a>
+                    </div>
+                </div>
+                <div class="button-container">
+                    <button type="button" onclick="window.history.back()" class="btn btn-secondary">Back to List</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+                <div class="form-info">
+                    <p class="warning">주의 : 기존 이미지는 Update 버튼 클릭 시 삭제 됩니다!!</p>
+                    <p class="warning">만일 기존 이미지가 필요하다면 꼭 다운로드 후 파일 추가를 통해 다시 업로드 시켜주세요</p>
+                    <p class="warning">이미지 이름 클릭시 다운로드 됩니다!</p>
+                </div>
+            </form>
+        </section>
+    </main>
+</div>
+</body>
+</html>
