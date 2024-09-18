@@ -17,11 +17,10 @@
         <h1 class="page-title">News List</h1>
         <nav class="nav-buttons">
             <button onclick="location.href='/api/admin'" class="btn btn-secondary">메인 페이지</button>
-            <a th:href="@{/api/admin/news/create}" class="btn btn-primary">Create News</a>
         </nav>
     </header>
-
     <main class="news-list">
+    <a th:href="@{/api/admin/news/create}" class="btn btn-primary" style="margin-bottom: 1.5rem">Create News</a>
         <table class="news-table">
             <thead>
             <tr>
