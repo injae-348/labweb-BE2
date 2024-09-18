@@ -31,7 +31,10 @@
                 <div class="info-item"><strong>Office (KR):</strong> <span th:text="${professorPage.professor.officeLocationKR}"></span></div>
                 <div class="info-item"><strong>Office (EN):</strong> <span th:text="${professorPage.professor.officeLocationEN}"></span></div>
             </div>
-            <a th:href="@{/api/admin/professors/edit/{id}(id=${professorPage.professor.id})}" class="btn btn-primary">Edit</a>
+          <div class="edit-container">
+                <a th:href="@{/api/admin/professors/edit/{id}(id=${professorPage.professor.id})}" class="btn btn-primary">Edit</a>
+                <p>Professor 이미지를 변경하고 싶으시면 edit 버튼을 눌러주세요</p>
+            </div>
         </section>
 
         <section class="career-list">
