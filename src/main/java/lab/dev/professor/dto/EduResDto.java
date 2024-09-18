@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 @Builder
 public record EduResDto(
+        Long id,
         String experienceYear,
         String degreeSummary,
         String degreeDetailKR,
@@ -16,6 +17,7 @@ public record EduResDto(
 
         public static EduResDto of(Education education) {
             return EduResDto.builder()
+                    .id(education.getId())
                     .experienceYear(education.getExperienceYear())
                     .degreeSummary(education.getDegreeSummary())
                     .degreeDetailKR(education.getDegreeDetailKR())

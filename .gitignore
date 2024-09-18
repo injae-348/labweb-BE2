@@ -7,6 +7,8 @@ build/
 
 data.sql
 .env
+src/main/java/lab/dev/InitialDataLoader.java
+src/main/resources/static/images/
 
 ### STS ###
 .apt_generated

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<div class="dashboard-container">
+    <h1 class="dashboard-title">Admin Dashboard</h1>
+    <div class="card-container">
+        <div class="card">
+            <a class="card-link" th:href="@{/api/admin/news}">
+                <h2 class="card-title">News 관리</h2>
+                <p class="card-description">News 관리 페이지로 바로가기</p>
+            </a>
+        </div>
+        <div class="card">
+            <a class="card-link" th:href="@{/api/admin/professors}">
+                <h2 class="card-title">Professor 관리<br>상세 정보<br>ex) 경력, 학위, 연구</h2>
+                <p class="card-description">Professor 관리 페이지로 바로가기</p>
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

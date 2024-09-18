@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Professor Details</title>
+    <link rel="stylesheet" th:href="@{/css/professor-list-styles.css}" />
+    <script>
+        function confirmDelete(id, type) {
+            if (confirm("진짜 삭제하실건가요?")) {
+                window.location.href = `/api/admin/professors/${type}/delete/${id}`;
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <header class="page-header">
+        <h1 class="page-title">Professor Details</h1>
+        <button onclick="location.href='/api/admin'" class="btn btn-secondary">메인 페이지로</button>
+    </header>
+
+    <main class="main-content">
+        <section class="professor-info">
+            <h2 class="section-title">Professor Information</h2>
+            <div class="info-grid">
+                <div class="info-item"><strong>Name:</strong> <span th:text="${professorPage.professor.name}"></span></div>
+                <div class="info-item"><strong>Major:</strong> <span th:text="${professorPage.professor.major}"></span></div>
+                <div class="info-item"><strong>University:</strong> <span th:text="${professorPage.professor.university}"></span></div>
+                <div class="info-item"><strong>Mobile:</strong> <span th:text="${professorPage.professor.mobilePhone}"></span></div>
+                <div class="info-item"><strong>Email:</strong> <span th:text="${professorPage.professor.email}"></span></div>
+                <div class="info-item"><strong>Office Phone:</strong> <span th:text="${professorPage.professor.officePhone}"></span></div>
+                <div class="info-item"><strong>Office (KR):</strong> <span th:text="${professorPage.professor.officeLocationKR}"></span></div>
+                <div class="info-item"><strong>Office (EN):</strong> <span th:text="${professorPage.professor.officeLocationEN}"></span></div>
+            </div>
+          <div class="edit-container">
+                <a th:href="@{/api/admin/professors/edit/{id}(id=${professorPage.professor.id})}" class="btn btn-primary">Edit</a>
+                <p>Professor 이미지를 변경하고 싶으시면 edit 버튼을 눌러주세요</p>
+            </div>
+        </section>
+
+        <section class="career-list">
+            <h2 class="section-title">Career List</h2>
+            <a th:href="@{/api/admin/professors/career/create}" class="btn btn-primary">Create Career</a>
+            <ul class="item-list">
+                <li th:each="career : ${professorPage.careers}" class="list-item">
+                    <div class="item-info">
+                        <p><strong>기간:</strong> <span th:text="${career.experienceYear()}"></span></p>
+                        <p><strong>학위:</strong> <span th:text="${career.career()}"></span></p>
+                        <p><strong>학위 (KR):</strong> <span th:text="${career.careerDetailKR()}"></span></p>
+                        <p><strong>학위 (EN):</strong> <span th:text="${career.careerDetailEN()}"></span></p>
+                    </div>
+                    <div class="item-actions">
+                        <a th:href="@{/api/admin/professors/career/edit/{id}(id=${career.id})}" class="btn btn-secondary">Edit</a>
+                        <a href="javascript:void(0);" th:onclick="'confirmDelete(' + ${career.id} + ', \'career\')'" class="btn btn-danger">Delete</a>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="education-list">
+            <h2 class="section-title">Education List</h2>
+            <a th:href="@{/api/admin/professors/education/create}" class="btn btn-primary">Create Education</a>
+            <ul class="item-list">
+                <li th:each="education : ${professorPage.educations}" class="list-item">
+                    <div class="item-info">
+                        <p><strong>기간:</strong> <span th:text="${education.experienceYear()}"></span></p>
+                        <p><strong>경력:</strong> <span th:text="${education.degreeSummary()}"></span></p>
+                        <p><strong>경력 (KR):</strong> <span th:text="${education.degreeDetailKR()}"></span></p>
+                        <p><strong>경력 (EN):</strong> <span th:text="${education.degreeDetailEN()}"></span></p>
+                    </div>
+                    <div class="item-actions">
+                        <a th:href="@{/api/admin/professors/education/edit/{id}(id=${education.id})}" class="btn btn-secondary">Edit</a>
+                        <a href="javascript:void(0);" th:onclick="'confirmDelete(' + ${education.id} + ', \'education\')'" class="btn btn-danger">Delete</a>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="research-list">
+            <h2 class="section-title">Research List</h2>
+            <a th:href="@{/api/admin/professors/research/create}" class="btn btn-primary">Create Research</a>
+            <ul class="item-list">
+                <li th:each="research : ${professorPage.researchPages}" class="list-item">
+                    <div class="item-info">
+                        <p><strong>Title:</strong> <span th:text="${research.title}"></span></p>
+                        <p>
+                            <strong>URL:</strong>
+                            <!-- URL을 클릭할 수 있는 링크로 변환 -->
+                            <a th:href="${research.url}" th:text="${research.url}" target="_blank"></a>
+                        </p>
+                    </div>
+                    <div class="item-actions">
+                        <a th:href="@{/api/admin/professors/research/edit/{id}(id=${research.id})}" class="btn btn-secondary">Edit</a>
+                        <a href="javascript:void(0);" th:onclick="'confirmDelete(' + ${research.id} + ', \'research\')'" class="btn btn-danger">Delete</a>
+                    </div>
+                </li>
+            </ul>
+        </section>
+    </main>
+</div>
+</body>
+</html>

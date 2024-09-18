@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/professor")
+@RequestMapping("/api/professors")
 public class ProfessorController {
 
     private final ProfessorService professorService;
@@ -38,23 +38,20 @@ public class ProfessorController {
         return ResponseEntity.ok(professorService.updateProfessor(id, profReqDto));
     }
 
-    @GetMapping("/{id}/careers")
+    @GetMapping("/careers")
     public ResponseEntity<List<CareerResDto>> getCareers(
-            @PathVariable Long id
     ) {
         return ResponseEntity.ok(careerService.getCareers());
     }
 
-    @GetMapping("/{id}/researchPages")
+    @GetMapping("/researches")
     public ResponseEntity<List<ResearResDto>> getResearchPages(
-            @PathVariable Long id
     ) {
         return ResponseEntity.ok(researchPageService.getResearchPages());
     }
 
-    @GetMapping("/{id}/educations")
+    @GetMapping("/educations")
     public ResponseEntity<List<EduResDto>> getEducations(
-            @PathVariable Long id
     ) {
         return ResponseEntity.ok(educationService.getEducations());
     }

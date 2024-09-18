@@ -8,12 +8,14 @@ import java.util.stream.Collectors;
 
 @Builder
 public record ResearResDto(
+        Long id,
         String title,
         String url
 ) {
 
     public static ResearResDto of(ResearchPage researchPage) {
         return ResearResDto.builder()
+                .id(researchPage.getId())
                 .title(researchPage.getTitle())
                 .url(researchPage.getUrl())
                 .build();
