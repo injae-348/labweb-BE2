@@ -6,8 +6,8 @@
 </head>
 <body>
 <div class="container">
-    <h1>Edit Research Page</h1>
-    <form th:action="@{/api/admin/professors/research/update/{id}(id=${research.id})}" th:object="${research}" method="post">
+    <h1 class="page-title">Edit Research Page</h1>
+    <form th:action="@{/api/admin/professors/research/update/{id}(id=${research.id})}" th:object="${research}" method="post" class="career-form">
         <input type="hidden" th:field="*{id}" />
         <div class="form-group">
             <label for="title">Title:</label>

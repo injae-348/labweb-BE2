@@ -6,8 +6,8 @@
 </head>
 <body>
 <div class="container">
-    <h1>Edit Education</h1>
-    <form th:action="@{/api/admin/professors/education/update/{id}(id=${education.id})}" th:object="${education}" method="post">
+    <h1 class="page-title">Edit Education</h1>
+    <form th:action="@{/api/admin/professors/education/update/{id}(id=${education.id})}" th:object="${education}" method="post" class="career-form">
         <input type="hidden" th:field="*{id}" />
         <div class="form-group">
             <label for="experienceYear">Experience Year:</label>
@@ -26,7 +26,7 @@
             <textarea id="degreeDetailEN" th:field="*{degreeDetailEN}" required></textarea>
         </div>
         <div class="button-container">
-            <button type="button" onclick="window.history.back()" class="btn btn-secondary">교수 리스트 페이지로 이동</button>
+            <button type="button" onclick="window.history.back()" class="btn btn-secondary">Back to List</button>
             <button type="submit" class="btn btn-primary">Update</button>
         </div>
     </form>
