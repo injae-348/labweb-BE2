@@ -34,6 +34,7 @@ public class ProfAdminController {
     private final ResearchPageService researchPageService;
     private final FileService fileService;
 
+    // Todo: Professor 관련 테스트 코드 작성(Professor & Career만 작성)
 
     @GetMapping // 정보, 경력, 학력, 연구 리스트 조회
     public String getProfessorDetail(

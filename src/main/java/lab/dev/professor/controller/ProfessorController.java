@@ -30,14 +30,6 @@ public class ProfessorController {
         return ResponseEntity.ok(professorService.getProfessor(id));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ProfResDto> updateProfessor(
-            @PathVariable Long id,
-            @Valid ProfReqDto profReqDto
-            ) {
-        return ResponseEntity.ok(professorService.updateProfessor(id, profReqDto));
-    }
-
     @GetMapping("/careers")
     public ResponseEntity<List<CareerResDto>> getCareers(
     ) {

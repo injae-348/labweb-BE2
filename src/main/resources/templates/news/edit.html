@@ -69,7 +69,7 @@
         <button onclick="location.href='/api/admin/news'" class="btn btn-secondary">뉴스 리스트 페이지</button>
     </header>
     <main class="main-content">
-        <form th:action="@{/api/admin/news/update/{id}(id=${news.id})}" th:object="${news}" method="post" enctype="multipart/form-data" class="edit-form">
+        <form th:action="@{/api/admin/news/edit/{id}(id=${news.id})}" th:object="${news}" method="post" enctype="multipart/form-data" class="edit-form">
             <input type="hidden" th:field="*{id}" />
             <div class="form-group">
                 <label for="date">Date:</label>

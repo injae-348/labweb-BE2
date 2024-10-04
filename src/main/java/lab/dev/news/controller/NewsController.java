@@ -36,33 +36,4 @@ public class NewsController {
         NewsResDto newsResDto = newsService.getNews(newsId);
         return ResponseEntity.ok(newsResDto);
     }
-
-    @PostMapping // 생성
-    public ResponseEntity<Long> createNews(
-            @Valid NewsReqDto newsReqDto
-    ) {
-        Long newsId = newsService.createNews(newsReqDto);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(newsId);
-    }
-
-    @DeleteMapping("/{news-id}") // 삭제
-    public ResponseEntity<Long> deleteNews(
-            @PathVariable("news-id") Long newsId
-    ) {
-        Long deletedId = newsService.deleteNews(newsId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                .body(deletedId);
-    }
-
-  @PutMapping("/{news-id}") // 수정
-    public ResponseEntity<NewsResDto> updateNews(
-            @PathVariable("news-id") Long newsId,
-            @Valid NewsReqDto newsReqDto
-    ) {
-        NewsResDto newsResDto = newsService.updateNews(newsId, newsReqDto);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(newsResDto);
-    }
-
 }
